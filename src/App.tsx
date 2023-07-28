@@ -5,26 +5,11 @@ import Formulario from './components/Formulario';
 import { IEvento } from './interfaces/IEvento';
 import Calendario from './components/Calendario';
 import ListaDeEventos from './components/ListaDeEventos';
+import { RecoilRoot } from 'recoil';
 
 function App() {
 
-  const [eventos, setEventos] = useState<IEvento[]>([
-    {
-        "descricao": "Estudar React",
-        "inicio": new Date("2022-01-15T09:00"),
-        "fim": new Date("2022-01-15T13:00"),
-        "completo": false,
-        "id": 1642342747
-    },
-    {
-        "descricao": "Estudar Recoil",
-        "inicio": new Date("2022-01-16T09:00"),
-        "fim": new Date("2022-01-16T11:00"),
-        "completo": false,
-        "id": 1642342959
-    }
-])
-
+  // const [eventos, setEventos] = useState<IEvento[]>([])
 
   const [filtro, setFiltro] = useState<Date | null>()
 
@@ -57,20 +42,26 @@ function App() {
     );
 
   return (
-    <div className={style.App}>
-      <div className={style.Coluna}>
-        <Card>
-          <Formulario aoSalvar={adicionarEvento} />
-        </Card>
-        <hr />
-        <Card>
-          <ListaDeEventos aoFiltroAplicado={aplicarFiltro} aoAlterarStatus={alterarStatusEvento} aoDeletarEvento={deletarEvento} eventos={filtrados} />
-        </Card>
+    <RecoilRoot>
+      <div className={style.App}>
+        <div className={style.Coluna}>
+          <Card>
+            <Formulario />
+          </Card>
+          <hr />
+          <Card>
+            <ListaDeEventos
+              aoFiltroAplicado={aplicarFiltro}
+              aoAlterarStatus={alterarStatusEvento}
+              aoDeletarEvento={deletarEvento}
+            />
+          </Card>
+        </div>
+        <div className={style.Coluna}>
+          <Calendario />
+        </div>
       </div>
-      <div className={style.Coluna}>
-        <Calendario eventos={eventos} />
-      </div>
-    </div>
+    </RecoilRoot>
   );
 }
 
