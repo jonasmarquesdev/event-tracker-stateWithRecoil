@@ -3,10 +3,22 @@ import Evento from '../Evento';
 import Filtro from '../Filtro';
 import style from './ListaDeEventos.module.scss';
 import useListaDeEventos from '../../state/hooks/useListaDeEventos';
+import { useRecoilValue } from 'recoil';
+import { IFiltroDeEventos } from '../../interfaces/IFiltroDeEventos';
+import { filtroDeEventos } from '../../state/atom';
 
 const ListaDeEventos: React.FC = () => {
 
-  const eventos = useListaDeEventos();
+  const todoOsEventos = useListaDeEventos();
+  const filtro = useRecoilValue<IFiltroDeEventos>(filtroDeEventos);
+
+  const eventos = todoOsEventos.filter(evento => {
+    if (!filtro.data) {
+      return true;
+    }
+    const ehOMesmoDia = filtro.data.toISOString().slice(0, 10) === evento.inicio.toISOString().slice(0, 10) // "2022-01-03...."
+    return ehOMesmoDia;
+  })
 
   return (<section>
     <Filtro />
